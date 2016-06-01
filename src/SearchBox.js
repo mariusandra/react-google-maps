@@ -29,6 +29,8 @@ export default class SearchBox extends Component {
     ...searchBoxControlledPropTypes,
     // Event [onEventName]
     ...searchBoxEventPropTypes,
+
+    onInputCreated: PropTypes.func,
   }
 
   static contextTypes = {
@@ -54,7 +56,7 @@ export default class SearchBox extends Component {
     if (!canUseDOM) {
       return;
     }
-    const { classes, style, placeholder, ...searchBoxProps } = this.props;
+    const { classes, style, placeholder, onInputCreated, ...searchBoxProps } = this.props;
 
     // Cannot create input via component - Google Maps will mess with React's internal state
     // by detaching/attaching.
@@ -70,6 +72,10 @@ export default class SearchBox extends Component {
       domEl,
       searchBoxProps
     );
+
+    if (onInputCreated) {
+      onInputCreated(domEl);
+    }
 
     this.setState({
       inputElement: domEl,
