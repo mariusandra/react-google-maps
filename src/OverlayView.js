@@ -60,6 +60,21 @@ export default class OverlayView extends Component {
     this.setState({ overlayView });
   }
 
+  componentWillUnmount() {
+    if (!canUseDOM) {
+      return;
+    }
+
+    const { anchorHolderRef } = this.props;
+    const { overlayView } = this.state;
+
+    if (anchorHolderRef) {
+      if (`MarkerClusterer` === anchorHolderRef.getAnchorType()) {
+        anchorHolderRef.getAnchor().removeMarker(overlayView);
+      }
+    }
+  }
+
   render() {
     if (this.state.overlayView) {
       return (
